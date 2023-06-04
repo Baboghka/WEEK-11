@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic-Tac-Toe</title>
+  <style>
+    body{
+display:flex;
+flex-direction:column;
+align-items:center;
+background-color: black;
+}
+   .board {
+     
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+      width: 300px;
+      margin: 0 auto;
+      
+   }   
+  
+h1{
+  color: yellow;
+
+}
+h2{
+    color: yellow;
+    font-size:2em;
+    margin-top: 0px;
+}
+
+button{
+background-color: transparent;
+color:yellow;
+border:yellow 1px solid;
+padding:10px;
+font-size:1.5em;
+}
+
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: #eaeaea;
+      text-align: center;
+      font-size: 36px;
+      cursor: pointer;
+       display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .cell:hover {
+      background-color: yellow;
+    }
+
+    .cell.x {
+      color: #f00;
+    }
+
+    .cell.o {
+      color: #00f;
+    }
+.cell.x-hover:hover::after{
+content:'X';
+opacity:0.4;
+
+}
+
+.cell.o-hover:hover::after{
+    content:'O';
+    opacity:0.4
+}
+  </style>
+</head>
+<body>
+   <h1>Tic Tac Toe</h1>
+  <div class="board">
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+  </div>
+   
+   <h2 id='game-over-text'> Winner is ???!!!</h2>
+   <div class="grid-container">
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <button id="restart-button">Restart Game</button>
+</div>
+</div>
+  <script>
+    // JavaScript code for the game logic
+    const cells = document.querySelectorAll('.cell');
+    let currentPlayer = 'x';
+
+    cells.forEach(cell => {
+      cell.addEventListener('click', handleClick, { once: true });
+    });
+
+    function handleClick(e) {
+      const cell = e.target;
+      cell.textContent = currentPlayer;
+      cell.classList.add(currentPlayer);
+
+      if (checkWin()) {
+        alert('Player ' + currentPlayer + ' wins!');
+        restartGame();
+      } else if (checkDraw()) {
+        alert('It\'s a draw!');
+        restartGame();
+      } else {
+        currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+      }
+    }
+
+    function checkWin() {
+      const winningCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+        [0, 4, 8], [2, 4, 6] // diagonals
+      ];
+
+      return winningCombinations.some(combination => {
+        return combination.every(index => {
+          return cells[index].classList.contains(currentPlayer);
+        });
+      });
+    }
+
+    function checkDraw() {
+      return [...cells].every(cell => {
+        return cell.classList.contains('x') || cell.classList.contains('o');
+      });
+    }
+
+
+
+
+    function restartGame() {
+      cells.forEach(cell => {
+        cell.textContent = '';
+        cell.classList.remove('x', 'o');
+        cell.addEventListener('click', handleClick, { once: true });
+      });
+
+    }
+ // Get the restart button element
+const restartButton = document.getElementById('restart-button');
+
+// Add a click event listener to the restart button
+restartButton.addEventListener('click', restartGame);
+
+// Function to handle the restart game functionality
+function restartGame() {
+  // Reset the game state or perform any necessary actions
+  
+  // Reload the page to start a new game
+  location.reload();
+}
+  </script>
+</body>
+</html>
